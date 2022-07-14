@@ -226,6 +226,7 @@ class Player():
     def stop(self):
         Player.addCard(field)
         field.clear
+
     def getCardMax(self, id):
         cardMaxIndex = -1
         max = 0
@@ -234,6 +235,7 @@ class Player():
                 max = self.inv[id][i].num
                 cardMaxIndex = i
         return self.inv[id][index]
+
 
 class Card():
     id = -1
@@ -368,9 +370,12 @@ class Sword(Card):
             chosenCard.active_skill
         else:
             activePlayer.stop()
+
+
 class Karaken(Card):
     id = 9
-    def active_skill(self, activePlayer  = Player):
+
+    def active_skill(self, activePlayer=Player):
         for i in range(2):
             cardDrawn = deck[-1]
             deck.remove(cardDrawn)
@@ -379,13 +384,45 @@ class Karaken(Card):
                 cardDrawn.active_skill
             else:
                 activePlayer.stop()
+
+
 class Mermaid(Card):
     id = 8
+
     def active_Mermaid(self, activePlayer):
         pass
+
+
+class Field():
+    playField = []
+
+    def __init__(self) -> None:
+        pass
+
+    def addCard(self, card=Card):
+        self.playField.append(card)
+
+    def removeCard(self, card=Card):
+        self.playField.remove(card)
+
+    def checlIdentical(self, card=Card):
+        return(self.playField.count(card) == 1)
+
+turn = 0
 game = []
 deck, discard = createDeck()
 field = []
 suit = ['Anchor', 'Hook', 'Cannon', 'Key', 'Chest',
         'Map', 'Mystic', 'Sword', 'Mermaid', 'Karaken']
-print(len(deck))
+n = int(input('Nhap so nguoi choi'))
+for i in range(n):
+    player = Player(input('Nhap ten nguoi choi'), i)
+    game.append(player)
+while(len(deck)):
+    playerTurn = game[turn % len(game)]
+    option = input('1 <=> drawn \n cai khac <=> stop')
+    if(n == '1'):
+        playerTurn.draw()
+    else:
+        playerTurn.stop()
+    turn += 1

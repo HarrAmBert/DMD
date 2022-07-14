@@ -1,7 +1,7 @@
 from abc import abstractclassmethod
 from ast import Break
 from dataclasses import field
-from operator import inv
+from operator import index, inv
 import random
 import turtle
 from unicodedata import name
@@ -155,7 +155,7 @@ import numpy as np
 def createDeck():
     deck = []
     discard = []
-    for i in range (2,8):
+    for i in range(2, 8):
         anchor = Anchor(i)
         hook = Hook(i)
         cannon = Cannon(i)
@@ -189,7 +189,8 @@ def createDeck():
             deck.append(mermaid)
             deck.append(karaken)
     random.shuffle(deck)
-    return deck,discard
+    return deck, discard
+
 
 class Player():
     id = -1
@@ -204,23 +205,36 @@ class Player():
         for i in range(len(inv)):
             if(len(int[i]) != 0):
                 print('{suit}: {num}'.format(num=inv[i], suit=suit[i]))
+
     def printInfo(self):
         print('id = {id} \n name = {name} \n inv = {inv}'
-            .format(id = self.id, name = self.name, inv = self.printInv))
+              .format(id=self.id, name=self.name, inv=self.printInv))
+
     def addCard(self, card):
         if(card == []):
             for item in card():
                 self.inv[item.id].append(item)
         else:
             self.inv[item.id].append(item)
+
     def draw(self):
         drawnCard = deck[-1]
         field.append(drawnCard)
         if(field.count(drawnCard) == 1):
             drawnCard.active_skill
+
     def stop(self):
         Player.addCard(field)
         field.clear
+    def getCardMax(self, id):
+        cardMaxIndex = -1
+        max = 0
+        for i in range((self.inv[id])):
+            if(self.inv[id][i].num > max):
+                max = self.inv[id][i].num
+                cardMaxIndex = i
+        return self.inv[id][index]
+
 class Card():
     id = -1
     num = -1
@@ -249,7 +263,7 @@ class Anchor(Card):
 class Hook(Card):
     id = 1
 
-    def active_skill(self, activePlayer = Player):
+    def active_skill(self, activePlayer=Player):
         activePlayer.printInv()
         chosenCardId = input('No id la bai de')
         chosenCardNum = input('No so la bai de')
@@ -259,7 +273,6 @@ class Hook(Card):
                 break
         activePlayer.inv[chosenCardId].remove(chosenCard)
         field.append(chosenCard)
-        
 
 
 class Cannon(Card):
@@ -275,9 +288,12 @@ class Cannon(Card):
                 chosenCardId = input('No id la bai de')
             game[chosenPlayerId].inv.remove(
                 max(game[chosenPlayerId].inv[chosenCardId]))
+
+
 class Key(Card):
     id = 3
-    def active_skill(self, activePlayer = Player):
+
+    def active_skill(self, activePlayer=Player):
         save = []
         cardToDrawn = len(field)
         for i in range(cardToDrawn):
@@ -287,9 +303,12 @@ class Key(Card):
                 discard.remove(cardToAdd)
             else:
                 break
+
+
 class Chest(Card):
     id = 4
-    def active_skill(self, activePlayer = Player):
+
+    def active_skill(self, activePlayer=Player):
         save = []
         cardToDrawn = len(field)
         for i in range(cardToDrawn):
@@ -299,36 +318,73 @@ class Chest(Card):
                 discard.remove(cardToAdd)
             else:
                 break
+
+
 class Map(Card):
     id = 5
-    def active_skill(self, activePlayer = Player):
+
+    def active_skill(self, activePlayer=Player):
         mapArr = []
         for i in range(3):
             card = random.choice(tuple(discard))
             mapArr.append(card)
-            print('index = {index} \n name = {name}'.format(index = i, name = card.name))
+            print('index = {index} \n name = {name}'.format(
+                index=i, name=card.name))
         index = int(input('No index de'))
         discard.remove(mapArr[index])
         field.append(mapArr[index])
         mapArr[index].active_skill()
+
+
 class Mystic(Card):
     id = 6
-    def active_skill(self, activePlayer = Player):
+
+    def active_skill(self, activePlayer=Player):
         seenCard = deck[-1]
         print(seenCard)
         n = input('1 <=> danh \n khac <=> bo vao deck')
         if(n == '1'):
             activePlayer.draw()
+
+
 class Sword(Card):
     id = 7
-    def active_Sword(self, activePlayer = Player):
+
+    def active_Sword(self, activePlayer=Player):
         for player in game():
             player.printInfo()
-        id = int(input('No id de'))
-
-
+        isIdentical = True
+        idPlayer = int(input('No id player de'))
+        idCard = int(input('No id card de'))
+        while(isIdentical):
+            if(len(activePlayer.inv[idCard]) != 0):
+                isIdentical = False
+            else:
+                print('Chon bai ko trung de')
+        chosenCard = game[idPlayer].getCardMax(idCard)
+        game[idPlayer].inv.remove(chosenCard)
+        field.append(chosenCard)
+        if(field.count(chosenCard) == 1):
+            chosenCard.active_skill
+        else:
+            activePlayer.stop()
+class Karaken(Card):
+    id = 9
+    def active_skill(self, activePlayer  = Player):
+        for i in range(2):
+            cardDrawn = deck[-1]
+            deck.remove(cardDrawn)
+            field.append(cardDrawn)
+            if(field.count(cardDrawn) == 1):
+                cardDrawn.active_skill
+            else:
+                activePlayer.stop()
+class Mermaid(Card):
+    id = 8
+    def active_Mermaid(self, activePlayer):
+        pass
 game = []
-deck,discard = createDeck()
+deck, discard = createDeck()
 field = []
 suit = ['Anchor', 'Hook', 'Cannon', 'Key', 'Chest',
         'Map', 'Mystic', 'Sword', 'Mermaid', 'Karaken']

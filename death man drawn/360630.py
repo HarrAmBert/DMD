@@ -1,155 +1,6 @@
 from abc import abstractclassmethod
-from ast import Break
-from dataclasses import field
-from operator import index, inv
 import random
 import turtle
-from unicodedata import name
-import numpy as np
-
-
-# class Card:
-#     id = -1
-#     num = -1
-#     def __init__(self, num) -> None:
-#         self.num = num
-#     @abstractclassmethod
-#     def active_skill(self, activePlayer):
-#         pass
-# class Cannon(Card):
-#     id = 2
-#     def active_skill(self, activePlayer):
-#         for player in game:
-#             if(player.name != activePlayer.name):
-#                 print(player.name)
-#                 activePlayer.printInv()
-#                 chosenName = input('Dat cai ten vao')
-#                 chosenCard = input('No la bai de')
-#         for player in game:
-#             if(player.name == chosenName):
-#                 player.inv.remove(chosenCard)
-#                 discard.append(chosenCard)
-# class Anchor(Card):
-#     id = 0
-#     def active_Anchor(self, activePlayer):
-#         save = []
-#         for card in field:
-#             save.append(card)
-#             if(card == suit[0]):
-#                 self.inv.extend(save)
-#                 field.clear
-# class Hook(Card):
-#     id = 1
-#     def active_Hook(self, activePlayer):
-#         activePlayer.printInv()
-#         chosenCard = input('No la bai de')
-#         if(chosenCard in activePlayer.inv):
-#             activePlayer.remove(chosenCard)
-#             field.append(chosenCard)
-#             activePlayer.active_Card(chosenCard)
-
-
-# class Map(Card):
-#     id = 5
-#     def active_Map(self, activePlayer):
-#         mapArr = []
-#         for i in range(3):
-#             mapArr.append(random.choice(tuple(discard)))
-#         print(mapArr)
-#         chosenCard = input('No la bai de')
-#         discard.remove(chosenCard)
-#         field.append(chosenCard)
-#         if(activePlayer.checkConcomitance(chosenCard)):
-#             activePlayer.active_Card(chosenCard)
-# class Mystic(Card):
-#     id = 6
-#     def active_Mystic(self, activePlayer):
-#         seenCard = deck[numDeck[-1]]
-#         print(seenCard)
-#         n = input('1 <=> lay', '\n', 'cai khac <=> dat vao cho cu')
-#         if(n == '1'):
-#             field.append(seenCard)
-#             deck.remove(seenCard)
-#             numDeck.remove(numDeck[-1])
-#             activePlayer.active_Card(seenCard)
-# class Sword(Card):
-#     id = 7
-#     def active_Sword(self, activePlayer):
-#         for player in game:
-#             print(player.name, '\n', player.inv)
-#         chosenName = input('Dat cai ten vao')
-#         chosenCard = input('No la bai de')
-#         if(chosenCard == player.inv.name):
-#             for player in game:
-#                 if(player.name == chosenName):
-#                     player.inv.remove(chosenCard)
-#                     field.append(chosenCard)
-#                     if(activePlayer.checkConcomitance(chosenCard)):
-#                         activePlayer.active_Card(chosenCard)
-#                     else:
-#                         discard.append(chosenCard)
-#         else:print('not found')
-# class Karaken(Card):
-#     id = 9
-#     def active_Karaken(self, activePlayer):
-#         for i in range(2):
-#             cardDrawn = deck[-1]
-#             deck.remove(cardDrawn)
-#             activePlayer.active_Card(cardDrawn)
-# class Mermaid(Card):
-#     id = 8
-#     def active_Mermaid(self, activePlayer):
-#         pass
-# class Player:
-#     save = []
-#     inv = [[], [], [], [], [], [], [], [], [], []]
-#     name = ''
-
-#     def __init__(self, name):
-#         self.name = name
-#     def printInv(self):
-#         for card in inv():
-#             print(card.num,suit[card.id])
-#     def checkConcomitance(self, id):
-#         return id in count
-
-#     def active_Card(self, cardDrawn):
-#         if(cardDrawn.split()[1] == suit[0]):
-#             self.active_Anchor()
-#             return
-#         if(cardDrawn.split()[1] == suit[1]):
-#             self.active_Hook(self)
-#             return
-#         if(cardDrawn.split()[1] == suit[2]):
-#             self.active_Cannon(self)
-#             return
-#         if(cardDrawn.split()[1] == suit[5]):
-#             self.active_Map(self)
-#             return
-#         if(cardDrawn.split()[1] == suit[6]):
-#             self.active_Mystic()
-#             return
-#         if(cardDrawn.split()[1] == suit[7]):
-#             self.active_Sword(self)
-#             return
-#         if(cardDrawn.split()[1] == suit[9]):
-#             self.active_Kraken()
-#             return
-#         if(cardDrawn.split()[1] == suit[3 and 4]):
-#             self.active_KeyandChest()
-#             return
-
-#     def draw(self):
-#         n = '1'
-#         while n == '1':
-#             n = input('1 <=> draw')
-#             if(n == '1'):
-#                 idCardDrawn = deck[numDeck[-1]].id
-#                 print(suit[idCardDrawn])
-#             if(self.checkConcomitance(idCardDrawn)):
-#                 deck[numDeck[-1]].active_Skill(self)
-#             deck.remove(deck[numDeck[-1]])
-#             numDeck.remove(numDeck[-1])
 
 
 def createDeck():
@@ -202,30 +53,62 @@ class Player():
         self.id = id
 
     def printInv(self):
-        for i in range(len(inv)):
-            if(len(int[i]) != 0):
-                print('{suit}: {num}'.format(num=inv[i], suit=suit[i]))
+        for i in range(len(self.inv)):
+            for j in range(len(self.inv[i])):
+                print('{num} : {suit}'.format(
+                    num=self.inv[i].num, suit=suit[self.inv[i].id]))
 
     def printInfo(self):
         print('id = {id} \n name = {name} \n inv = {inv}'
               .format(id=self.id, name=self.name, inv=self.printInv))
 
     def addCard(self, card):
-        if(card == []):
-            for item in card():
-                self.inv[item.id].append(item)
-        else:
-            self.inv[item.id].append(item)
+        self.inv.extend(card)
 
     def draw(self):
         drawnCard = deck[-1]
+        deck.remove(drawnCard)
         field.append(drawnCard)
-        if(field.count(drawnCard) == 1):
-            drawnCard.active_skill
+        if(drawnCard.id not in field):
+            idList.append(drawnCard.id)
+            drawnCard.active_skill(activePlayer=self)
+        for card in field:
+            print('{num} : {suit},'.format(
+                num=card.num, suit=suit[card.id]), end=' ')
+        print('\n')
+            
 
+        
     def stop(self):
-        Player.addCard(field)
+        discard.extend(field)
+        random.shuffle(discard)
         field.clear
+        idList.clear()
+
+    def collect(self):
+        haveKey = False
+        haveChest = False
+        for card in field:
+            if(card.id == 4):
+                haveChest = True
+                continue
+            if(card.id == 3):
+                haveKey = True
+                continue
+        if(haveChest and haveKey):
+            save = []
+            cardToDrawn = len(field)
+            for i in range(cardToDrawn):
+                if(len(discard) != 0):
+                    cardToAdd = random.choice(turtle(discard))
+                    save.append(cardToAdd)
+                    discard.remove(cardToAdd)
+                else:
+                    break
+            self.addCard(save)
+        self.addCard(field)
+        field.clear()
+        idList.clear()
 
     def getCardMax(self, id):
         cardMaxIndex = -1
@@ -234,7 +117,7 @@ class Player():
             if(self.inv[id][i].num > max):
                 max = self.inv[id][i].num
                 cardMaxIndex = i
-        return self.inv[id][index]
+        return self.inv[id][cardMaxIndex]
 
 
 class Card():
@@ -284,42 +167,43 @@ class Cannon(Card):
         for player in game:
             if(player.name != activePlayer.name):
                 print('Name: {name} \n Id: {id}'.format(
-                    name=player.name, Id=Player.Id))
+                    name=player.name, Id=Player.id))
                 activePlayer.printInv()
-                chosenPlayerId = input('Dat cai is vao')
+                chosenPlayerId = input('Dat cai id vao')
                 chosenCardId = input('No id la bai de')
-            game[chosenPlayerId].inv.remove(
-                max(game[chosenPlayerId].inv[chosenCardId]))
-
+                chosenCard = game[chosenPlayerId].getCardMax(chosenCardId)
+                game[chosenPlayerId].inv.remove(chosenCard)
 
 class Key(Card):
     id = 3
 
     def active_skill(self, activePlayer=Player):
-        save = []
-        cardToDrawn = len(field)
-        for i in range(cardToDrawn):
-            if(len(discard) != 0):
-                cardToAdd = random.choice(turtle(discard))
-                activePlayer.addCard(cardToAdd)
-                discard.remove(cardToAdd)
-            else:
-                break
+        pass
+        # save = []
+        # cardToDrawn = len(field)
+        # for i in range(cardToDrawn):
+        #     if(len(discard) != 0):
+        #         cardToAdd = random.choice(turtle(discard))
+        #         activePlayer.addCard(cardToAdd)
+        #         discard.remove(cardToAdd)
+        #     else:
+        #         break
 
 
 class Chest(Card):
     id = 4
 
     def active_skill(self, activePlayer=Player):
-        save = []
-        cardToDrawn = len(field)
-        for i in range(cardToDrawn):
-            if(len(discard) != 0):
-                cardToAdd = random.choice(turtle(discard))
-                activePlayer.addCard(cardToAdd)
-                discard.remove(cardToAdd)
-            else:
-                break
+        pass
+        # save = []
+        # cardToDrawn = len(field)
+        # for i in range(cardToDrawn):
+        #     if(len(discard) != 0):
+        #         cardToAdd = random.choice(turtle(discard))
+        #         activePlayer.addCard(cardToAdd)
+        #         discard.remove(cardToAdd)
+        #     else:
+        #         break
 
 
 class Map(Card):
@@ -343,7 +227,8 @@ class Mystic(Card):
 
     def active_skill(self, activePlayer=Player):
         seenCard = deck[-1]
-        print(seenCard)
+        print('{num} : {suit}'
+              .format(num=seenCard.num, suit=suit[seenCard.id]))
         n = input('1 <=> danh \n khac <=> bo vao deck')
         if(n == '1'):
             activePlayer.draw()
@@ -392,37 +277,26 @@ class Mermaid(Card):
     def active_Mermaid(self, activePlayer):
         pass
 
-
-class Field():
-    playField = []
-
-    def __init__(self) -> None:
-        pass
-
-    def addCard(self, card=Card):
-        self.playField.append(card)
-
-    def removeCard(self, card=Card):
-        self.playField.remove(card)
-
-    def checlIdentical(self, card=Card):
-        return(self.playField.count(card) == 1)
-
 turn = 0
+idList = []
 game = []
 deck, discard = createDeck()
 field = []
 suit = ['Anchor', 'Hook', 'Cannon', 'Key', 'Chest',
         'Map', 'Mystic', 'Sword', 'Mermaid', 'Karaken']
-n = int(input('Nhap so nguoi choi'))
+n = int(input('Nhap so nguoi choi \n'))
 for i in range(n):
-    player = Player(input('Nhap ten nguoi choi'), i)
+    player = Player(input('Nhap ten nguoi choi \n'), i)
     game.append(player)
 while(len(deck)):
+    inTurn = True
     playerTurn = game[turn % len(game)]
-    option = input('1 <=> drawn \n cai khac <=> stop')
-    if(n == '1'):
-        playerTurn.draw()
-    else:
-        playerTurn.stop()
+    print(playerTurn.name, 'turn')
+    while(inTurn):
+        option = input('1 <=> drawn \n cai khac <=> collect \n')
+        if(option == '1'):
+            playerTurn.draw()
+        else:
+            playerTurn.collect()
+            break
     turn += 1
